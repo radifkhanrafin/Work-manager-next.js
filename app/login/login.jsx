@@ -1,10 +1,13 @@
 "use client";
 import { loginUser } from '@/httpsHelper/loginApi';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Login = () => {
-
+    const router = useRouter();
+    const path = usePathname();
+    console.log(path)
     const [formData, setFormData] = useState({
         email: "",
         password: '',
@@ -19,11 +22,30 @@ const Login = () => {
         try {
 
             const result = await loginUser(formData)
+            
             console.log(result)
-            toast.success(`${result.message}`, {
-                position: 'top-right',
-                autoClose: 2000
-            })
+
+            if (result.status == 200) {
+                toast.success(`${result.message}`, {
+                    position: 'top-right',
+                    autoClose: 2000
+                })
+                router.push('/')
+            }
+            else if (result.status == 401) {
+                toast.error(`${result.message}`, {
+                    position: 'top-right',
+                    autoClose: 2000
+                })
+            }
+            else if (result.status == 404) {
+                toast.error(`${result.message}`, {
+                    position: 'top-right',
+                    autoClose: 2000
+                })
+            }
+
+
 
         } catch (error) {
             console.log(error.message)

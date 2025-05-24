@@ -1,42 +1,61 @@
-import { User } from "@/database/Models/userSchema"; 
+import { User } from "@/database/Models/userSchema";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import status from "daisyui/components/status";
+import jwt from "jsonwebtoken";
+
+
 export async function POST(request) {
-
-
-
     try {
         const { email, password } = await request.json();
 
-        const user = await User.findOne({ email: email });
-        // console.log(user)
+        // Find user by email
+        const user = await User.findOne({ email });
 
-        if (user == null || !user) {
+        if (!user) {
             return NextResponse.json({
-                message: "This User Not Available on Database",
-                status: 404
-            })
+                message: "This user is not available in the database.",
+                status: 404,
+            });
         }
 
-        const matched = bcrypt.compareSync(password, user.password)
+        // Compare password
+        const matched = bcrypt.compareSync(password, user.password);
 
         if (!matched) {
             return NextResponse.json({
-                message: "Wrong Password",
-
-            })
+                message: "Wrong password",
+                status: 401,
+            });
         }
 
+        // Generate JWT token
+        const token = jwt.sign(
+            { _id: user._id },
+            process.env.JWT_KEY,
+            { expiresIn: '1d' }
+        );
+
+        console.log("token:", token);
+
+        // Create response and set cookie
+        const response = NextResponse.json({
+            message: "Login successful",
+            success: true,
+            status: 200,
+        });
+
+        response.cookies.set("login_token", token, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24, // 1 day
+        });
+
+        return response;
+
+    } catch (error) {
         return NextResponse.json({
-            message: "Login Successful",
-            status:201,
-        })
-    } catch (error) {f
-        return NextResponse.json({
-            message: `error message :${ error.message}`,
+            message: `Error: ${error.message}`,
             success: false,
-            status: 500
-        })
+            status: 500,
+        });
     }
 }
