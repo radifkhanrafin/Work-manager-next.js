@@ -1,20 +1,27 @@
 "use client"
 import Image from 'next/image'
 import post from '../../assests/post.svg'
-import { useEffect, useState } from 'react';
-import { addTaskApi } from '@/httpsHelper/taskApi'; 
+import { useContext, useEffect, useState } from 'react';
+import { addTaskApi } from '@/httpsHelper/taskApi';
 import { toast } from 'react-toastify';
+import UserContext from '@/context/userContext';
+import LoadingSpinner from '../component/LoadingSpinner';
 
 
 
 
 
 const AddTask = () => {
- 
+
+  const { user } = useContext(UserContext)
+  if (user == undefined) {
+    return <LoadingSpinner />
+  }
+  // console.log(user._id)
   const [task, setTask] = useState({
     title: "",
     content: "",
-    userId: "682e2797cd1082cc32b559ea",
+    userId: `${user._id}`,
     status: "none",
 
   });
@@ -24,12 +31,12 @@ const AddTask = () => {
 
   const handleTaskAdd = async (event) => {
     event.preventDefault();
-
+    console.log(task)
     try {
       const result = await addTaskApi(task)
       console.log(result)
 
-      toast.success("Task Added Successful", { position: 'top-center',  autoClose: 1000, })
+      toast.success("Task Added Successful", { position: 'top-center', autoClose: 1000, })
       setTask({
         title: "",
         content: "",
@@ -43,8 +50,8 @@ const AddTask = () => {
 
 
   }
- 
- 
+
+
   return (
     <div>
 

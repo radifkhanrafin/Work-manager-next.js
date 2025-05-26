@@ -7,7 +7,8 @@ connectDB();
 
 export async function GET(request, { params }) {
     const { userid } = params;
-    console.log("user id", userid);
+
+    // console.log("user id", userid);
     try {
 
         const user = await User.findOne({ _id: userid }).select("-password");

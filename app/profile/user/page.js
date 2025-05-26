@@ -1,8 +1,7 @@
 
 import React from 'react'
+import UserProfile from './UserProfile'
 
 export default function page() {
-  return (
-    <div>this is profile / user route</div>
-  )
+  return <UserProfile />
 }

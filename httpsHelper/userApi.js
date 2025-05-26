@@ -3,7 +3,7 @@ import { httpAxios } from "./httpAxios";
 export async function getAllUser(params) {
     const users = await httpAxios.get('api/users')
         .then(res => res.data)
-    return
+    return users
 };
 export async function postUser(user) {
     const result = await httpAxios

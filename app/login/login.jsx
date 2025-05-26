@@ -1,13 +1,13 @@
 "use client";
+import UserContext from '@/context/userContext';
 import { loginUser } from '@/httpsHelper/loginApi';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Login = () => {
     const router = useRouter();
-    const path = usePathname();
-    console.log(path)
+    const { user, setUser } = useContext(UserContext);
     const [formData, setFormData] = useState({
         email: "",
         password: '',
@@ -17,15 +17,12 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        // Handle your API logic here
         try {
 
             const result = await loginUser(formData)
-            
             console.log(result)
-
             if (result.status == 200) {
+                setUser(result.user)
                 toast.success(`${result.message}`, {
                     position: 'top-right',
                     autoClose: 2000
