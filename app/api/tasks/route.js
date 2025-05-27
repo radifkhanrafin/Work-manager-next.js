@@ -33,11 +33,12 @@ export async function POST(request, { params }) {
     try {
 
         const bodyData = await request.json();
-        console.log(bodyData);
+        console.log("bodyData",bodyData);
 
 
         const task = new Task(bodyData)
         const newTask = await task.save();
+        console.log("newTask",newTask)
         return NextResponse.json({
             message: "Successfully Insert data ",
             status: 200,

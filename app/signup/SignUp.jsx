@@ -24,7 +24,7 @@ const SignUp = () => {
        try {
         
          const result = await postUser(formData)
-        // console.log(result)
+        console.log(result)
         toast.success("Signup Successful", {
             position: 'top-right',
             autoClose: 1000

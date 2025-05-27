@@ -10,7 +10,7 @@ const header = () => {
     const { user, setUser } = useContext(UserContext);
     
     const [users, setUsers] = useState();
-
+// console.log(user)
     useEffect(() => {
         if (typeof user === 'string' && user.startsWith('<!DOCTYPE html>')) {
             setUsers(undefined);

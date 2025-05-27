@@ -9,7 +9,7 @@ const taskSchema = new Schema({
         type: String,
         require: true,
     },
-    Status: {
+    status: {
         type: String,
         enum: ["pending", "complete"],
         default: "pending",
@@ -22,7 +22,7 @@ const taskSchema = new Schema({
         type: mongoose.ObjectId,
         require: true,
     }
-})
+}, { strict: true })
 
 // export const Task = mongoose.models.tasks || mongoose.model("tasks", taskSchema);
-export const Task = mongoose.models.tasks || mongoose.model("tasks", taskSchema);
+export const Task = mongoose.models.task || mongoose.model("task", taskSchema);

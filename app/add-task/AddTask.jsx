@@ -14,15 +14,20 @@ import LoadingSpinner from '../component/LoadingSpinner';
 const AddTask = () => {
 
   const { user } = useContext(UserContext)
+  if (!user || user == undefined) {
+    return <LoadingSpinner />
+  }
   if (user == undefined) {
     return <LoadingSpinner />
   }
   // console.log(user._id)
+
+  
   const [task, setTask] = useState({
     title: "",
     content: "",
-    userId: `${user._id}`,
-    status: "none",
+    userId: user._id,
+    status: "",
 
   });
 
@@ -36,12 +41,12 @@ const AddTask = () => {
       const result = await addTaskApi(task)
       console.log(result)
 
-      toast.success("Task Added Successful", { position: 'top-center', autoClose: 1000, })
+      toast.success(`${result.message}`, { position: 'top-center', autoClose: 1000, })
       setTask({
         title: "",
         content: "",
-        userId: "",
-        status: "none",
+        userId: user._id,
+        status: "",
 
       })
     } catch (error) {
@@ -134,7 +139,7 @@ const AddTask = () => {
                      dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-              <option value='none' disabled >---Select---</option>
+              <option value='' disabled >---Select---</option>
               <option value="pending">Pending</option>
               <option value="complete">Complete</option>
 

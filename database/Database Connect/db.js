@@ -1,7 +1,17 @@
 import mongoose from 'mongoose';
 import { User } from '../Models/userSchema';
 
+
+const config = {
+    isConnected: 0,
+}
 const connectDB = async () => {
+
+    if (config.isConnected) {
+        return
+    }
+
+
     try {
         const { connection } = await mongoose.connect(process.env.MONGO_DB_URL, {
             dbName: "work_manager"
@@ -9,16 +19,8 @@ const connectDB = async () => {
 
         console.log("Good ~~ Your Database is Connected:", connection.name);
 
-        const user = new User({
-            name: "test name ",
-            email: "test@gmail.com",
-            password: "testing password",
-            about: "testing about",
-            profileURL: "photo "
-        })
 
-
-        await user.save();
+        config.isConnected = connection.readyState
     } catch (error) {
         console.error("Not Good ~~ Failed to connect Database:", error.message);
     }

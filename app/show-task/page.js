@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import ShowUserTask from './showUserTask'; 
 
 export const metadata = {
   title: "Show Task : Work Manager",
-};
+}; 
 export default function page() {
-  return (
-    <div>Show task page</div>
-  )
+  return  <ShowUserTask  />
 }
